@@ -7,29 +7,23 @@ namespace Glav.SQLBuilder.Logging
 {
     public class Logger : ILogger
     {
-
-        public void LogMessage(string message, bool outputToConsole)
-        {
-            string logMsg = FormatMessage(message);
-            System.Diagnostics.Trace.WriteLine(logMsg);
-            if (outputToConsole)
-                Console.WriteLine(logMsg);
-        }
-
         public void LogMessage(string message)
         {
             LogMessage(message, true);
         }
 
-        public void LogMessage(string messageFormat, params object[] args)
+        public void LogMessage(string formatMessage, params object[] args)
         {
-            LogMessage(string.Format(messageFormat, args),true);
-
+            LogMessage(string.Format(formatMessage, args), true);
         }
 
-        private string FormatMessage(string message)
+        public void LogMessage(string message, bool outputToConsole)
         {
-            return string.Format("[{0}] {1}", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), message);
+            //TODO: Output to file, may useLog4Net or whatever
+            string logMsg =string.Format("[{0}] {1}",DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),message);
+            System.Diagnostics.Trace.WriteLine(logMsg);
+            if (outputToConsole)
+                Console.WriteLine(logMsg);
         }
     }
 }

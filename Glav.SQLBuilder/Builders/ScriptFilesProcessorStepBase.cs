@@ -30,8 +30,18 @@ namespace Glav.SQLBuilder.Builders
                 SQLServer.EnsureConnection();
                 SQLServer.DatabaseServer.ConnectionContext.BeginTransaction();
 
-                var schemaVersionResult = SQLServer.DatabaseServer.ConnectionContext.ExecuteScalar(string.Format("select top 1 Current{0}Version from [ola_tran].[dbo].[DBVersion]", ScriptPrefix));
                 int schemaVersion = 0;
+
+				if (Configuration.PackageOnly)
+				{
+					Logger.LogMessage("In PackageaOnly Mode. Current Version assumed to be 0");
+				}
+				else
+				{
+
+					var schemaVersionResult =
+						SQLServer.DatabaseServer.ConnectionContext.ExecuteScalar(
+							string.Format("select top 1 Current{0}Version from [ola_tran].[dbo].[DBVersion]", ScriptPrefix));
                 try
                 {
                     schemaVersion = Convert.ToInt32(schemaVersionResult);
@@ -40,13 +50,11 @@ namespace Glav.SQLBuilder.Builders
                 {
                     schemaVersion = 0;
                 }
-                Logger.LogMessage(string.Format("Current {0} Version in database: [{1}]", ScriptPrefix, schemaVersion), true);
-
-                var db = SQLServer.DatabaseServer.Databases[Configuration.DatabaseName];
+					Logger.LogMessage("Current {0} Version in database: [{1}]", ScriptPrefix, schemaVersion);
+				}
                 var scripts = _scriptCollector.GetListOfScripts(Configuration.ScriptDirectory, ScriptPrefix);
                 if (scripts.Scripts.Count > 0)
                 {
-                    SQLServer.DatabaseServer.ConnectionContext.ExecuteNonQuery(string.Format("USE [{0}]", Configuration.DatabaseName));
                     if (schemaVersion < scripts.LastSequenceNumberUsed)
                     {
                         Logger.LogMessage("{0} scripts will database from old version [{1}] to new version: [{2}]", ScriptPrefix, schemaVersion, scripts.LastSequenceNumberUsed);
@@ -54,30 +62,34 @@ namespace Glav.SQLBuilder.Builders
                         {
                             if (script.Key > schemaVersion)
                             {
-                                Logger.LogMessage("About to execute {0} script '{1}'", ScriptPrefix, script.Value.Filename);
-                                var count = SQLServer.DatabaseServer.ConnectionContext.ExecuteNonQuery(script.Value.Contents);
-                                Logger.LogMessage("{0} script '{1}' executed. {2} items affected.", ScriptPrefix, script.Value.Filename, count);
+								var substitutedContents = SubstituteScriptContentBasedOnMode(script.Value.Contents);
+
+								ExecuteOrOutputScript(script.Value.Filename,ScriptPrefix,substitutedContents);
                             }
                             else
                             {
-                                Logger.LogMessage("Skipping {0} script '{1}' as script version of {2} is less than schema version of {3}", ScriptPrefix, script.Value.Filename, script.Key, schemaVersion);
+                                Logger.LogMessage("Skipping {0} script '{1}' as script version of {2} is less than schema version of {3}",ScriptPrefix, script.Value.Filename, script.Key,schemaVersion);
                             }
                         }
 
-                        var versionUpdateQuery = string.Format("update [{0}].[dbo].[{1}] set Current{2}Version={3},LastUpdated= GETDATE()",
-                                                                    Configuration.DatabaseName, Configuration.VersionTableName, ScriptPrefix, scripts.LastSequenceNumberUsed);
-                        SQLServer.DatabaseServer.ConnectionContext.ExecuteNonQuery(versionUpdateQuery);
-                        SQLServer.DatabaseServer.ConnectionContext.CommitTransaction();
+						if (!Configuration.PackageOnly)
+						{
+							SQLServer.DatabaseServer.ConnectionContext.ExecuteNonQuery(
+								string.Format("update [{0}].[dbo].[{1}] set Current{2}Version={3},LastUpdated= GETDATE()",
+								              Configuration.MainDatabaseName, Configuration.VersionTableName, ScriptPrefix,
+								              scripts.LastSequenceNumberUsed));
+						}
                     }
                     else
                     {
-                        Logger.LogMessage("No {0} update will be performed as Schema version of [{1}] in database is up to date.", ScriptPrefix, schemaVersion);
+                        Logger.LogMessage("No {0} update will be performed as Schema version of [{1}] in database is up to date.",ScriptPrefix, schemaVersion);
                     }
                 }
                 else
                 {
-                    Logger.LogMessage("No {0} scripts were found in {1}. No schema updates performed.", ScriptPrefix, Configuration.ScriptDirectory);
+                    Logger.LogMessage("No {0} scripts were found in {1}. No schema updates performed.",ScriptPrefix, Configuration.ScriptDirectory);
                 }
+                SQLServer.DatabaseServer.ConnectionContext.CommitTransaction();
 
             }
             catch (Exception ex)
@@ -93,7 +105,7 @@ namespace Glav.SQLBuilder.Builders
 
         public override string Name
         {
-            get { return string.Format("{0} Scripts Execution", ScriptPrefix); }
+            get { return string.Format("{0} Scripts Execution",ScriptPrefix); }
         }
     }
 }

@@ -16,13 +16,13 @@ namespace Glav.SQLBuilder.Helpers
         {
             ScriptCollectionResults results = new ScriptCollectionResults();
 
-            string searchCriteria = string.Format("{0}_*.sql",scriptFilePrefix);
-            var files = Directory.GetFiles(directoryToSearch, searchCriteria);
-            if (files != null && files.Length > 0)
+			var files = GetAllMatchingFilesInAllSubdirectories(directoryToSearch, scriptFilePrefix);
+
+			if (files != null && files.Count > 0)
             {
-                files.ToList().ForEach(file =>
+                files.ForEach(file =>
                     {
-                        int startPos = file.IndexOf('_');
+                        int startPos = file.LastIndexOf('_');
                         int endPos = file.LastIndexOf(".sql", StringComparison.InvariantCultureIgnoreCase);
                         if (startPos >= 0 && endPos > startPos)
                         {
@@ -42,6 +42,25 @@ namespace Glav.SQLBuilder.Helpers
 
             return results;
         }
+
+		private List<string> GetAllMatchingFilesInAllSubdirectories(string directoryToSearch, string scriptFilePrefix)
+		{
+			List<string> allFiles = new List<string>();
+			
+			// Get the files in the current directory first
+			string searchCriteria = string.Format("{0}_*.sql", scriptFilePrefix);
+			allFiles.AddRange(Directory.GetFiles(directoryToSearch, searchCriteria));
+
+			// Get a list of sub directories that we need to search as well. We aggregate all the matching
+			// files in all subdirectories to form a flat list of "{type}_####.sql"files
+			var subDirs = Directory.EnumerateDirectories(directoryToSearch, "*.*", SearchOption.AllDirectories);
+			foreach (var dir in subDirs)
+			{
+				allFiles.AddRange(Directory.GetFiles(dir, searchCriteria));
+			}
+
+			return allFiles;
+		}
 
         public string GetFileContents(string filename)
         {

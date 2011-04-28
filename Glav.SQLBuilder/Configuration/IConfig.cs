@@ -13,7 +13,12 @@ namespace Glav.SQLBuilder.Configuration
         string ScriptDirectory { get; }
         string PostScriptToRun { get;  }
         string PreScriptToRun { get;  }
-        string DatabaseName { get;  }
+        string MainDatabaseName { get;  }
+    	string[] SupportingDatabaseNames { get; }
         string VersionTableName { get;  }
+		SqlBuildMode BuildMode { get; set; }
+    	Dictionary<string,string> ScriptSubstitutionsStaging { get; }
+		Dictionary<string, string> ScriptSubstitutionsRelease { get; }
+		bool PackageOnly { get; set; }
     }
 }
