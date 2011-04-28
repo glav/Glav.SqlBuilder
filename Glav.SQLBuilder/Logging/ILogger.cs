@@ -7,8 +7,8 @@ namespace Glav.SQLBuilder.Logging
 {
     public interface ILogger
     {
-        void LogMessage(string message);
         void LogMessage(string message, bool outputToConsole);
-        void LogMessage(string messageFormat, params object[] args);
+        void LogMessage(string message);
+        void LogMessage(string formatMessage, params object[] args);
     }
 }

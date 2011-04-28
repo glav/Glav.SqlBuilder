@@ -36,14 +36,10 @@ namespace Glav.SQLBuilder.Builders
 
                     if (File.Exists(preBuildFile))
                     {
-                        var contentsOfFile = File.ReadAllText(preBuildFile);
-                        SQLServer.DatabaseServer.ConnectionContext.BeginTransaction();
-                        SQLServer.DatabaseServer.ConnectionContext.ExecuteNonQuery(string.Format("USE [{0}]", Configuration.DatabaseName));
+                    	var rawScriptContents = File.ReadAllText(preBuildFile); 
+                        var substitutedContents = SubstituteScriptContentBasedOnMode(rawScriptContents);
 
-                        Logger.LogMessage("About to execute {0} Script '{1}'", ExecutionPhase.ToString(), preBuildFile);
-                        var count = SQLServer.DatabaseServer.ConnectionContext.ExecuteNonQuery(contentsOfFile);
-                        Logger.LogMessage("{0} script '{1}' executed. {2} items affected.", ExecutionPhase.ToString(), preBuildFile, count);
-                        SQLServer.DatabaseServer.ConnectionContext.CommitTransaction();
+						ExecuteOrOutputScript(preBuildFile, ExecutionPhase.ToString(), substitutedContents);
 
                     }
                 }

@@ -25,7 +25,7 @@ namespace Glav.SQLBuilder.Configuration {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SomeScriptToRunAfterCompletion.sql")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PostBuild_Script.sql")]
         public string PostScriptToRun {
             get {
                 return ((string)(this["PostScriptToRun"]));
@@ -34,7 +34,7 @@ namespace Glav.SQLBuilder.Configuration {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SomeScriptToRunBeforeStartingMainScriptRun.sql")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PreBuild_Script.sql")]
         public string PreScriptToRun {
             get {
                 return ((string)(this["PreScriptToRun"]));
@@ -71,9 +71,9 @@ namespace Glav.SQLBuilder.Configuration {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ola_tran")]
-        public string DatabaseName {
+        public string MainDatabaseName {
             get {
-                return ((string)(this["DatabaseName"]));
+                return ((string)(this["MainDatabaseName"]));
             }
         }
         
@@ -88,10 +88,57 @@ namespace Glav.SQLBuilder.Configuration {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\z")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ola_log;ola_state;ola_audit_trail")]
+        public string SupprtingDatabaseNames {
+            get {
+                return ((string)(this["SupprtingDatabaseNames"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
         public string ScriptDirectory {
             get {
                 return ((string)(this["ScriptDirectory"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ola_tran=ola_stage;ola_audit_trail=ola_stage_audit_trail;ola_log=ola_stage_log;ol" +
+            "a_state=ola_stage_state")]
+        public string ScriptSubstitutionsStaging {
+            get {
+                return ((string)(this["ScriptSubstitutionsStaging"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ola_tran=ola_live;ola_audit_trail=ola_live_audit_trail;ola_log=ola_live_log;ola_s" +
+            "tate=ola_live_state")]
+        public string ScriptSubstitutionsRelease {
+            get {
+                return ((string)(this["ScriptSubstitutionsRelease"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
+        public string SqlBuildMode {
+            get {
+                return ((string)(this["SqlBuildMode"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PackageOnly {
+            get {
+                return ((bool)(this["PackageOnly"]));
             }
         }
     }

@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="PostScriptToRun" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">SomeScriptToRunAfterCompletion.sql</Value>
+      <Value Profile="(Default)">PostBuild_Script.sql</Value>
     </Setting>
     <Setting Name="PreScriptToRun" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">SomeScriptToRunBeforeStartingMainScriptRun.sql</Value>
+      <Value Profile="(Default)">PreBuild_Script.sql</Value>
     </Setting>
     <Setting Name="ServerName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.</Value>
@@ -17,14 +17,29 @@
     <Setting Name="Password" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DatabaseName" Type="System.String" Scope="Application">
+    <Setting Name="MainDatabaseName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ola_tran</Value>
     </Setting>
     <Setting Name="VersionTableName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">DBVersion</Value>
     </Setting>
+    <Setting Name="SupprtingDatabaseNames" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ola_log;ola_state;ola_audit_trail</Value>
+    </Setting>
     <Setting Name="ScriptDirectory" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">d:\temp\z</Value>
+      <Value Profile="(Default)">.</Value>
+    </Setting>
+    <Setting Name="ScriptSubstitutionsStaging" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ola_tran=ola_stage;ola_audit_trail=ola_stage_audit_trail;ola_log=ola_stage_log;ola_state=ola_stage_state</Value>
+    </Setting>
+    <Setting Name="ScriptSubstitutionsRelease" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ola_tran=ola_live;ola_audit_trail=ola_live_audit_trail;ola_log=ola_live_log;ola_state=ola_live_state</Value>
+    </Setting>
+    <Setting Name="SqlBuildMode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Normal</Value>
+    </Setting>
+    <Setting Name="PackageOnly" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

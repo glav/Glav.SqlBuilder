@@ -71,6 +71,7 @@
     <Compile Include="Builders\ScriptExecutionStepBase.cs" />
     <Compile Include="Builders\ScriptFilesProcessorStepBase.cs" />
     <Compile Include="Builders\VersionTableCheckBuildStep.cs" />
+    <Compile Include="Configuration\ConfigKeyValueParser.cs" />
     <Compile Include="Configuration\ConfigPovider.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -78,6 +79,7 @@
     </Compile>
     <Compile Include="Configuration\IConfig.cs" />
     <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\SQLBuildMode.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\IScriptCollector.cs" />
     <Compile Include="Helpers\ScriptCollector.cs" />
