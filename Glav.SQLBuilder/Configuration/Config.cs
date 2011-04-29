@@ -49,10 +49,10 @@ namespace Glav.SQLBuilder.Configuration
 		{
 			get
 			{
-				if (string.IsNullOrWhiteSpace(ConfigPovider.Default.SupprtingDatabaseNames))
+				if (string.IsNullOrWhiteSpace(ConfigPovider.Default.SupportingDatabaseNames))
 					return new string[] { string.Empty };
 
-				return ConfigPovider.Default.SupprtingDatabaseNames.Split(';');
+				return ConfigPovider.Default.SupportingDatabaseNames.Split(';');
 			}
         }
 
