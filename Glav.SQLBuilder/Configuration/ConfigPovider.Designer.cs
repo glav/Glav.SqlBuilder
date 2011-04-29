@@ -71,9 +71,9 @@ namespace Glav.SQLBuilder.Configuration {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ola_log;ola_state;ola_audit_trail")]
-        public string SupprtingDatabaseNames {
+        public string SupportingDatabaseNames {
             get {
-                return ((string)(this["SupprtingDatabaseNames"]));
+                return ((string)(this["SupportingDatabaseNames"]));
             }
         }
         
@@ -130,15 +130,6 @@ namespace Glav.SQLBuilder.Configuration {
         public string PreScriptToRun {
             get {
                 return ((string)(this["PreScriptToRun"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ola_tran")]
-        public string DatabaseName {
-            get {
-                return ((string)(this["DatabaseName"]));
             }
         }
         
