@@ -41,7 +41,7 @@ namespace Glav.SQLBuilder.Builders
 
 					var schemaVersionResult =
 						SQLServer.DatabaseServer.ConnectionContext.ExecuteScalar(
-							string.Format("select top 1 Current{0}Version from [ola_tran].[dbo].[DBVersion]", ScriptPrefix));
+							string.Format("select top 1 Current{0}Version from [{1}].[dbo].[DBVersion]", ScriptPrefix,Configuration.MainDatabaseName));
                 try
                 {
                     schemaVersion = Convert.ToInt32(schemaVersionResult);
