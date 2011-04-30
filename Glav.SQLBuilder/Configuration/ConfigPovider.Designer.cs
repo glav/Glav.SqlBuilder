@@ -52,7 +52,7 @@ namespace Glav.SQLBuilder.Configuration {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ola_tran")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string MainDatabaseName {
             get {
                 return ((string)(this["MainDatabaseName"]));
